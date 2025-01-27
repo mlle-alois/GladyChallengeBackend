@@ -1,0 +1,12 @@
+[
+  {
+    "id": "da2dc808-186f-4e59-adfb-d753c9d56a82",
+    "name": "Tesla",
+    "balance": 10000.0
+  },
+  {
+    "id": "41347bdf-d002-46e3-b6f3-fe1847bcebd4",
+    "name": "Apple",
+    "balance": 19690.0
+  }
+]

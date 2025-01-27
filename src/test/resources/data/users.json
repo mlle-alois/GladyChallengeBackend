@@ -1,0 +1,54 @@
+[
+  {
+    "id": "7626e4a6-fdfd-44e4-b602-320a4c8aa6fb",
+    "name": "John Doe",
+    "deposits": [
+      {
+        "id": "33902626-f539-4215-91f3-7fa65be39b24",
+        "companyId": "da2dc808-186f-4e59-adfb-d753c9d56a82",
+        "depositType": "GIFT",
+        "amount": 100.0,
+        "distributionDate": "2025-01-01",
+        "expirationDate": "2026-01-01"
+      },
+      {
+        "id": "5eee8482-e4b4-4046-95bb-31728c0aff2f",
+        "companyId": "da2dc808-186f-4e59-adfb-d753c9d56a82",
+        "depositType": "MEAL",
+        "amount": 180.0,
+        "distributionDate": "2025-01-01",
+        "expirationDate": "2026-02-28"
+      }
+    ]
+  },
+  {
+    "id": "b4e36b1c-0c0f-4e5b-9292-bb8c585e6c83",
+    "name": "Jane Doe",
+    "deposits": [
+      {
+        "id": "c8f6695e-8145-4fbb-9dc9-4057c9bd382c",
+        "companyId": "41347bdf-d002-46e3-b6f3-fe1847bcebd4",
+        "depositType": "MEAL",
+        "amount": 180.0,
+        "distributionDate": "2024-10-01",
+        "expirationDate": "2026-02-28"
+      },
+      {
+        "id": "ce0f5444-6a2b-4548-9f93-83823510c572",
+        "companyId": "41347bdf-d002-46e3-b6f3-fe1847bcebd4",
+        "depositType": "GIFT",
+        "amount": 80.0,
+        "distributionDate": "2024-11-01",
+        "expirationDate": "2026-01-01"
+      },
+      {
+        "id": "ff051366-56fa-4ed9-a9d3-c3c00b4d1b91",
+        "companyId": "41347bdf-d002-46e3-b6f3-fe1847bcebd4",
+        "depositType": "MEAL",
+        "amount": 100.0,
+        "distributionDate": "2023-01-01",
+        "expirationDate": "2024-02-28"
+      }
+    ]
+  }
+]
