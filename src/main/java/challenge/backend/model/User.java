@@ -18,7 +18,7 @@ import java.util.UUID;
 public class User {
     private UUID id;
     private String name;
-    private final List<Deposit> deposits = new ArrayList<>();
+    private List<Deposit> deposits = new ArrayList<>();
 
     public void addDeposit(Deposit deposit) {
         deposits.add(deposit);
