@@ -3,10 +3,14 @@ package challenge.backend.model;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static challenge.backend.model.DepositType.GIFT;
 import static java.time.Month.FEBRUARY;
@@ -19,73 +23,53 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class DepositTest {
     @Nested
     @DisplayName("Tests for create method")
-    class createDepositTests {
-        @Test
-        @DisplayName("Should create deposit with correct values when deposit type is gift")
-        void should_CreateDepositWithCorrectValues_When_DepositTypeIsGift() {
-            // given
-            UUID companyId = UUID.randomUUID();
-            DepositType depositType = GIFT;
-            BigDecimal amount = BigDecimal.valueOf(100.0);
-            LocalDate distributionDate = LocalDate.of(2021, JUNE, 15);
+    class CreateDepositTests {
 
-            LocalDate expectedExpirationDate = LocalDate.of(2022, JUNE, 14);
+        record DepositTestCase(String description, UUID companyId, DepositType depositType, BigDecimal amount,
+                               LocalDate distributionDate, LocalDate expectedExpirationDate) {
+        }
 
-            // when
-            Deposit deposit = Deposit.create(companyId, depositType, amount, distributionDate);
+        static Stream<Arguments> provideDepositsData() {
+            return Stream.of(
+                    Arguments.of(new DepositTestCase(
+                            "Gift deposit with standard expiration",
+                            UUID.randomUUID(), DepositType.GIFT, BigDecimal.valueOf(100.0),
+                            LocalDate.of(2021, JUNE, 15), LocalDate.of(2022, JUNE, 14))
+                    ),
 
-            // then
-            assertAll(
-                    () -> assertEquals(depositType, deposit.getDepositType()),
-                    () -> assertEquals(amount, deposit.getAmount()),
-                    () -> assertEquals(distributionDate, deposit.getDistributionDate()),
-                    () -> assertEquals(expectedExpirationDate, deposit.getExpirationDate())
+                    Arguments.of(new DepositTestCase(
+                            "Meal deposit with standard expiration",
+                            UUID.randomUUID(), DepositType.MEAL, BigDecimal.valueOf(200.0),
+                            LocalDate.of(2020, JANUARY, 1), LocalDate.of(2021, FEBRUARY, 28))
+                    ),
+
+                    Arguments.of(new DepositTestCase(
+                            "Meal deposit with standard expiration (non-leap year)",
+                            UUID.randomUUID(), DepositType.MEAL, BigDecimal.valueOf(200.0),
+                            LocalDate.of(2026, JUNE, 12), LocalDate.of(2027, FEBRUARY, 28))
+                    ),
+
+                    Arguments.of(new DepositTestCase(
+                            "Meal deposit with leap year expiration",
+                            UUID.randomUUID(), DepositType.MEAL, BigDecimal.valueOf(200.0),
+                            LocalDate.of(2027, JUNE, 12), LocalDate.of(2028, FEBRUARY, 29))
+                    )
             );
         }
 
-        @Test
-        @DisplayName("Should create deposit with correct values when deposit type is meal")
-        void should_CreateDepositWithCorrectValues_When_DepositTypeIsMeal() {
-            // given
-            UUID companyId = UUID.randomUUID();
-            DepositType depositType = DepositType.MEAL;
-            BigDecimal amount = BigDecimal.valueOf(200.0);
-            LocalDate distributionDate = LocalDate.of(2020, JANUARY, 1);
-
-            LocalDate expectedExpirationDate = LocalDate.of(2021, FEBRUARY, 28);
-
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("provideDepositsData")
+        @DisplayName("Should create deposit with correct values")
+        void should_CreateDepositWithCorrectValues(DepositTestCase testCase) {
             // when
-            Deposit deposit = Deposit.create(companyId, depositType, amount, distributionDate);
+            Deposit deposit = Deposit.create(testCase.companyId, testCase.depositType, testCase.amount, testCase.distributionDate);
 
             // then
             assertAll(
-                    () -> assertEquals(depositType, deposit.getDepositType()),
-                    () -> assertEquals(amount, deposit.getAmount()),
-                    () -> assertEquals(distributionDate, deposit.getDistributionDate()),
-                    () -> assertEquals(expectedExpirationDate, deposit.getExpirationDate())
-            );
-        }
-
-        @Test
-        @DisplayName("Should create deposit with correct values when deposit type is meal and is leap year")
-        void should_CreateDepositWithCorrectValues_When_DepositTypeIsMealAndIsLeapYear() {
-            // given
-            UUID companyId = UUID.randomUUID();
-            DepositType depositType = DepositType.MEAL;
-            BigDecimal amount = BigDecimal.valueOf(200.0);
-            LocalDate distributionDate = LocalDate.of(2027, JUNE, 12);
-
-            LocalDate expectedExpirationDate = LocalDate.of(2028, FEBRUARY, 29); // année bissextile
-
-            // when
-            Deposit deposit = Deposit.create(companyId, depositType, amount, distributionDate);
-
-            // then
-            assertAll(
-                    () -> assertEquals(depositType, deposit.getDepositType()),
-                    () -> assertEquals(amount, deposit.getAmount()),
-                    () -> assertEquals(distributionDate, deposit.getDistributionDate()),
-                    () -> assertEquals(expectedExpirationDate, deposit.getExpirationDate())
+                    () -> assertEquals(testCase.depositType, deposit.getDepositType()),
+                    () -> assertEquals(testCase.amount, deposit.getAmount()),
+                    () -> assertEquals(testCase.distributionDate, deposit.getDistributionDate()),
+                    () -> assertEquals(testCase.expectedExpirationDate, deposit.getExpirationDate())
             );
         }
     }
